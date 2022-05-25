@@ -6,18 +6,19 @@ def phase1(c, table, x, obj, lengths):
     lc, lbl, lbg, lbe = lengths[0], lengths[1], lengths[2], lengths[3]
     for i in range(1,lbg+lbe+1):
         table[1][1:] += table[-i][1:] 
-    print(tabulate(table))
-    table, x, C, I = simplex_Method(c, table, x, obj, lengths, True)
+    # print(tabulate(table))
+    table, x, C, basic_phs, I, Entering, EI = simplex_Method(c, table, x, obj, lengths, True)
 #     print(tabulate(table))
     
     
-    return table, x, C, I
+    return table, x, C, basic_phs, I, Entering, EI
 
-def phase2(c, table, x, obj, C, I, lengths):
-    print("Phase2:- ")
+def phase2(c, table, x, obj, C, basic_phs, I, lengths, Entering, EI):
+    # print("Phase2:- ")
     lc, lbl, lbg, lbe = lengths[0], lengths[1], lengths[2], lengths[3]
-    print('C = ',C)
-    table = np.delete(table, np.s_[-(lbg+lbe+1):-1], 1)
+    # print('C = ',C)
+    table[1][-(lbg+lbe+1):-1] = -float('inf')
+    # table = np.delete(table, np.s_[-(lbg+lbe+1):-1], 1)
     table[1][0] = 'z' 
     if (obj == 'Min'):       
         table[1][1:lc+1] = -c
@@ -28,7 +29,7 @@ def phase2(c, table, x, obj, C, I, lengths):
     for i in range(len(I)):
         table[1][1:] += C[i]*table[I[i]][1:]
 #     print(tabulate(table))
-    result, table, X, Y, F, ite = simplex_Method(c, table, x, obj, lengths, phase2 = True, basic_phs=C)
+    result, table, X, Y, F, ite = simplex_Method(c, table, x, obj, lengths, phase2 = True, basic_phs=basic_phs, Lev_I = I, Ent = Entering, Ent_I = EI)
 #     print(tabulate(table))
     
     return result, table, X, Y, F, ite

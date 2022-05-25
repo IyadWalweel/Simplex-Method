@@ -21,8 +21,8 @@ def simplex(c, Al = None, bl = None, Ag = None, bg = None, Ae = None, be = None,
         result, table, X, Y, F, ite = Big_M_Method(c, table, M, x, obj, lengths)
     else:
         x = np.zeros(lc)
-        table, x_new, C, I = phase1(c, table, x, obj, lengths)
-        result, table, X, Y, F, ite = phase2(c, table, x_new, obj, C, I, lengths)
+        table, x_new, C, basic_phs, I, Entering, EI = phase1(c, table, x, obj, lengths)
+        result, table, X, Y, F, ite = phase2(c, table, x_new, obj, C, basic_phs, I, lengths, Entering, EI)
     if Show:
         print("The Optimal Tableau: ")
         print(tabulate(table))
