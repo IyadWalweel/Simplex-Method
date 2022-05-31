@@ -15,6 +15,7 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
     Y = []    # List of Dual Solutions
     F = []    # List of Function Values
     ite = 0
+    Xs = list(table[0][1:lc+1])
     # lc = len(c)
 #     X = np.zeros((lc))
 
@@ -99,6 +100,8 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
         mi = min(L)
         mi_ind = L.index(mi) + 2             # Index of the leaving variable
         leaving = table[mi_ind][0]           # Leaving variable
+        I.append(mi_ind)
+
         
         basic_phs2[mi_ind-2] = O[ind]
 
@@ -125,16 +128,32 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
         else: 
             F.append(-table[1][-1])
         
+        print('entering is: ', entering)
+        print('leaving is: ', leaving)
+        print('Entering is: ', Entering)
+        print('EI = ', EI)
+        print('I = ', I)
+        # print('Leaving is: ', Leaving)
         if leaving in Entering:
             k = Entering.index(leaving)
+            print('k = ', k)
             x[EI[k]] = 0                    # If leaving was entering make it's coordinate in the solution to be zero
+            Entering.remove(Entering[k])
             EI.remove(EI[k])
             I.remove(I[k])
-            I.append(mi_ind)
+            print('EI New = ', EI)
+            print("I New = ", I)
+            # I.append(mi_ind)
             C[k] = -O[ind]
         else:
-            I.append(mi_ind)
-            C[ite] = -O[ind]
+            # I.append(mi_ind)
+            C[mi_ind-2] = -O[ind]
+        # if entering in Xs:
+        #     if leaving in Entering:
+        #         k = Entering.index(leaving)
+        #         C[k] = -O[ind]
+        #     else:
+        #         C[ite] = -O[ind]
         # print('I = ', I)
         # print('C = ', C)
         
@@ -163,6 +182,7 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
         # print("x = ", x)
         # print("y = ", y)
         # print('****************************')
+        print('ite = ', ite)
         ite += 1                                  # New Iteration
         ma = np.max(table[1][1:-1])
         # print('max = ', ma)

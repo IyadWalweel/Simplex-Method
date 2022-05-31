@@ -1,4 +1,4 @@
-from Titles import titles
+from .Titles import titles
 import numpy as np
 from tabulate import tabulate
 

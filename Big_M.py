@@ -1,4 +1,4 @@
-from Simplex_Method import simplex_Method
+from .Simplex_Method import simplex_Method
 
 def Big_M_Method(c, table, M, x, obj, lengths):
     lc, lbl, lbg, lbe = lengths[0], lengths[1], lengths[2], lengths[3]

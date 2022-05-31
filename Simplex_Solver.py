@@ -1,8 +1,8 @@
 import numpy as np
-from Standard_Form import std_Form
-from Simplex_Method import simplex_Method
-from Big_M import Big_M_Method
-from Two_Phase import *
+from .Standard_Form import std_Form
+from .Simplex_Method import simplex_Method
+from .Big_M import Big_M_Method
+from .Two_Phase import *
 from tabulate import tabulate
 
 def simplex(c, Al = None, bl = None, Ag = None, bg = None, Ae = None, be = None, obj = 'Min', Show = False, Big_M = False, M=100):

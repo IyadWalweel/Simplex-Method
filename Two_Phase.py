@@ -1,5 +1,5 @@
 import numpy as np
-from Simplex_Method import simplex_Method
+from .Simplex_Method import simplex_Method
 from tabulate import tabulate
 
 def phase1(c, table, x, obj, lengths):

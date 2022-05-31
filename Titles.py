@@ -17,7 +17,7 @@ def titles(lc, lbl = 0, lbg = 0, lbe = 0):
     R[0] = "z"
     for j in range(1, lbl+1):
         R[j] = "s{}".format(j)
-    for j in range(lbl+1, lbg+lbe+2):
+    for j in range(lbl+1, lbg+lbe+lbl+1):
         R[j] = "R{}".format(j - lbl)
            
     return np.array([M]), np.array([R])
