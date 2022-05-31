@@ -6,7 +6,7 @@ from tabulate import tabulate
 def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, basic_phs = None, Lev_I = [], Ent = [], Ent_I = [],
                                                                                                      Big_M = False, M = 100):
     lc, lbl, lbg, lbe = lengths[0], lengths[1], lengths[2], lengths[3]
-    C = np.zeros(lbl+lbg+lbe)         # List of original objective coefficients of the Entering variables (Useful in the Two-Phase Only!)
+    C = []         # List of original objective coefficients of the Entering variables (Useful in the Two-Phase Only!)
     basic_phs2 = np.zeros(lbl+lbg+lbe)
     Entering = Ent.copy()    # List of x's Entering variables (To check if one variable was entering and then leaving)
     EI = Ent_I.copy() 
@@ -15,7 +15,8 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
     Y = []    # List of Dual Solutions
     F = []    # List of Function Values
     ite = 0
-    Xs = list(table[0][1:lc+1])
+    # Xs = list(table[0][1:lc+1])
+    Xs = []
     # lc = len(c)
 #     X = np.zeros((lc))
 
@@ -82,9 +83,10 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
     # print('max index = ', ind)
     while (ma > 1e-12):                      # Stopping Criterion 
         entering = table[0][ind]             # Determining the Entering variable 
+        Entering.append(entering)         # x's Entering variables
         if (ind <= len(x)):
             EI.append(ind - 1)                # Indices of x's Entering variables
-            Entering.append(entering)         # x's Entering variables
+            Xs.append(entering)
             # print(Entering)
         # print("EI = ", EI)
             # C[ite] = O[ind]                      # Original Objective coefficient of the entering variable (Two-Phase)
@@ -101,7 +103,7 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
         mi_ind = L.index(mi) + 2             # Index of the leaving variable
         leaving = table[mi_ind][0]           # Leaving variable
         I.append(mi_ind)
-
+        C.append(-O[ind])
         
         basic_phs2[mi_ind-2] = O[ind]
 
@@ -134,20 +136,31 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
         print('EI = ', EI)
         print('I = ', I)
         # print('Leaving is: ', Leaving)
-        if leaving in Entering:
-            k = Entering.index(leaving)
-            print('k = ', k)
-            x[EI[k]] = 0                    # If leaving was entering make it's coordinate in the solution to be zero
-            Entering.remove(Entering[k])
+        if leaving in Xs:
+            k = Xs.index(leaving)
+            x[EI[k]] = 0
             EI.remove(EI[k])
             I.remove(I[k])
-            print('EI New = ', EI)
-            print("I New = ", I)
+            C.remove(C[k])
+            Entering.remove(Entering[k])
+            Xs.remove(Xs[k])
+        elif leaving in Entering:
+            k = Entering.index(leaving)
+            # print('k = ', k)
+            Entering.remove(Entering[k])
+            # EI.remove(EI[k])
+            I.remove(I[k])
+            C.remove(C[k])
+            # print('EI New = ', EI)
+            # print("I New = ", I)
+            # if leaving in Xs:
+            #     r = Xs.index(leaving)
+            #     x[r] = 0                    # If leaving was entering make it's coordinate in the solution to be zero
             # I.append(mi_ind)
-            C[k] = -O[ind]
-        else:
-            # I.append(mi_ind)
-            C[mi_ind-2] = -O[ind]
+        #     C[k] = -O[ind]
+        # else:
+        #     # I.append(mi_ind)
+        #     C[mi_ind-2] = -O[ind]
         # if entering in Xs:
         #     if leaving in Entering:
         #         k = Entering.index(leaving)
