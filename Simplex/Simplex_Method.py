@@ -4,7 +4,7 @@ import copy
 from tabulate import tabulate
 
 def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, basic_phs = None, Lev_I = [], Ent = [], Ent_I = [],
-                                                                                                     Big_M = False, M = 100):
+                                                                                 XEnt = [], Big_M = False, M = 100):
     lc, lbl, lbg, lbe = lengths[0], lengths[1], lengths[2], lengths[3]
     C = []         # List of original objective coefficients of the Entering variables (Useful in the Two-Phase Only!)
     basic_phs2 = np.zeros(lbl+lbg+lbe)
@@ -16,9 +16,12 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
     F = []    # List of Function Values
     ite = 0
     # Xs = list(table[0][1:lc+1])
-    Xs = []
+    Xs = XEnt.copy()
     # lc = len(c)
 #     X = np.zeros((lc))
+    # print("Entering = ", Entering)
+    # print("EI = ", EI)
+    # print("I = ", I)
 
     # print(tabulate(table))
 
@@ -130,18 +133,19 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
         else: 
             F.append(-table[1][-1])
         
-        print('entering is: ', entering)
-        print('leaving is: ', leaving)
-        print('Entering is: ', Entering)
-        print('EI = ', EI)
-        print('I = ', I)
-        # print('Leaving is: ', Leaving)
+        # print('entering is: ', entering)
+        # print('leaving is: ', leaving)
+        # print('Entering is: ', Entering)
+        # print('EI = ', EI)
+        # print('I = ', I)
+        # print('Xs is: ', Xs)
         if leaving in Xs:
             k = Xs.index(leaving)
             x[EI[k]] = 0
             EI.remove(EI[k])
             I.remove(I[k])
-            C.remove(C[k])
+            if phase1:
+                C.remove(C[k])
             Entering.remove(Entering[k])
             Xs.remove(Xs[k])
         elif leaving in Entering:
@@ -150,7 +154,8 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
             Entering.remove(Entering[k])
             # EI.remove(EI[k])
             I.remove(I[k])
-            C.remove(C[k])
+            if phase1:
+                C.remove(C[k])
             # print('EI New = ', EI)
             # print("I New = ", I)
             # if leaving in Xs:
@@ -195,7 +200,7 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
         # print("x = ", x)
         # print("y = ", y)
         # print('****************************')
-        print('ite = ', ite)
+        # print('ite = ', ite)
         ite += 1                                  # New Iteration
         ma = np.max(table[1][1:-1])
         # print('max = ', ma)
@@ -205,7 +210,8 @@ def simplex_Method(c, table, x, obj, lengths, phase1 = False, phase2 = False, ba
     # print("iterations = ", ite)
     
     if phase1:
-        return table, X[-1], C, basic_phs2, I, Entering, EI
+        # print(tabulate(table))
+        return table, X[-1], C, basic_phs2, I, Entering, EI, Xs
     else:
         X = np.array(X)
         Y = np.array(Y)
