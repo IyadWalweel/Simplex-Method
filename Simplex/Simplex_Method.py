@@ -64,7 +64,7 @@ def simplex_Method(c, table, x, obj, lengths, eps, phase1 = False, phase2 = Fals
     if phase2:
         OOC = basic_phs
     else:
-        OOC = O[-(lbl+lbg+lbe+1):-1]            # Original Objective Coefficients (OOC) of optimal primal basic variables - inital vector
+        OOC = list(O[-(lbl+lbg+lbe+1):-1])            # Original Objective Coefficients (OOC) of optimal primal basic variables - inital vector
 #     print(tabulate(table))
 #     print('type is', type(OOC))
     # print('OOC = ', OOC)
@@ -105,14 +105,14 @@ def simplex_Method(c, table, x, obj, lengths, eps, phase1 = False, phase2 = Fals
         mi_ind = L.index(mi) + 2             # Index of the leaving variable
         leaving = table[mi_ind][0]           # Leaving variable
         I.append(mi_ind)
-        C.append(-O[ind])
+        C.append(-O[ind].copy())
 
         if (ind <= len(x)):
             EI.append(ind - 1)                # Indices of x's Entering variables
             Xs.append(entering)
             LI.append(mi_ind)
         
-        basic_phs2[mi_ind-2] = O[ind]
+        basic_phs2[mi_ind-2] = O[ind].copy()
 
         # print(leaving)
         # Leaving.append(leaving)
@@ -144,15 +144,16 @@ def simplex_Method(c, table, x, obj, lengths, eps, phase1 = False, phase2 = Fals
         # print('I = ', I)
         # print('Xs is: ', Xs)
         if leaving in Xs:
-            k = Xs.index(leaving)
-            x[EI[k]] = 0
-            EI.remove(EI[k])
-            LI.remove(LI[k])
-            I.remove(I[k])
+            k1 = Xs.index(leaving)
+            k2 = Entering.index(leaving)
+            x[EI[k1]] = 0
+            EI.remove(EI[k1])
+            LI.remove(LI[k1])
+            I.remove(I[k2])
             if phase1:
-                C.remove(C[k])
-            Entering.remove(Entering[k])
-            Xs.remove(Xs[k])
+                C.remove(C[k2])
+            Entering.remove(Entering[k2])
+            Xs.remove(Xs[k1])
         elif leaving in Entering:
             k = Entering.index(leaving)
             # print('k = ', k)
@@ -197,7 +198,7 @@ def simplex_Method(c, table, x, obj, lengths, eps, phase1 = False, phase2 = Fals
 #         print('ind = ', ind)
         # print('O = ', O)
 #         print('O[ind] = ', O[ind])
-        OOC[mi_ind - 2] = O[ind]
+        OOC[mi_ind - 2] = O[ind].copy()
         # print("OOC = ", OOC)
 #         print(tabulate(table))
         y = OOC@OPI
@@ -215,7 +216,16 @@ def simplex_Method(c, table, x, obj, lengths, eps, phase1 = False, phase2 = Fals
     # print("iterations = ", ite)
     
     if phase1:
-        print(table[1][-1])
+        print(basic_phs2)
+        print('c = ', c)
+        print('O = ', O)
+        print(len(C))
+        print('C = ', C)
+        print(len(I))
+        print("I = ", I)
+        print("Entering = ", Entering)
+        print('Xs = ', Xs)
+        print("EI = ", EI)
         return table, X[-1], C, basic_phs2, I, Entering, EI, LI, Xs
     else:
         # print(len(EI))
