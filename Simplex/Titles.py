@@ -1,6 +1,7 @@
 import numpy as np
 
 def titles(lc, lbl = 0, lbg = 0, lbe = 0):
+##  Columns Titles 
     M = ["" for x in range(lc+lbl+(2*lbg)+lbe + 2)]
     M[0] = "Basic"
     M[-1] = "Solution"
@@ -13,6 +14,7 @@ def titles(lc, lbl = 0, lbg = 0, lbe = 0):
     for i in range(lc+lbg+lbl+1, lc+lbl+(2*lbg)+lbe+1):
         M[i] = "R{}".format(i - (lc+lbg+lbl))
         
+##  Rows Titles 
     R = ["" for x in range(lbl+lbg+lbe + 1)]
     R[0] = "z"
     for j in range(1, lbl+1):

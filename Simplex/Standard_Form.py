@@ -4,7 +4,6 @@ from tabulate import tabulate
 
 def std_Form(obj, c, Al = None, bl = None, Ag = None, bg = None, Ae = None, be = None, Show = False, Big_M = False, M = 100):
     lc = len(c)
-    # M = 0                         # In case Big_M = False
     case = None                   # Determining the case of the problem: simple simplex, Big-M, Two Phase
     lengths = np.zeros(4, int)
     lengths[0] = lc
@@ -56,17 +55,12 @@ def std_Form(obj, c, Al = None, bl = None, Ag = None, bg = None, Ae = None, be =
             T = np.concatenate((A, Id, B.T), axis = 1)
         ct, rt = titles(lc,lbl,lbg,lbe)                  # Column's and row's titles
         if (Big_M):
-            # print("Std-Form -- Big M")
             O = np.zeros(lc+lbl+(2*lbg)+lbe + 1)   
-            O[-(lbg+lbe+1):-1] = -M*np.ones(lbg+lbe)         # Objective function row with Big-M 
-            # print(lbe)
-            # print(lbg)
-            # print('O in Big M is',O)  
+            O[-(lbg+lbe+1):-1] = -M*np.ones(lbg+lbe)         # Objective function row with Big-M  
             if (obj == "Min"):
                 O[:lc] = -c
             else:
                 O[:lc] = c
-            # print("O",O)
             O = np.array([O])
         else: # Two-Phases Method
             O = np.zeros(lc+lbl+(2*lbg)+lbe + 1)

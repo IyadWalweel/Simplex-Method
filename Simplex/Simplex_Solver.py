@@ -17,32 +17,29 @@ def simplex(c, Al = None, bl = None, Ag = None, bg = None, Ae = None, be = None,
     if (case is not None):
         x = np.zeros(lc)
         result, table, X, Y, F, ite = simplex_Method(c, table, x, obj, lengths, eps)
-        # return result, table, X, Y, F, ite
     elif (Big_M):
         x = np.zeros(lc)
         result, table, X, Y, F, ite = Big_M_Method(c, table, M, x, obj, lengths, eps)
         infeas = c@X[-1]
-        # print(X[-1])
-        # print(round(result['Optimal Value']))
-        # # print(result[0]['Optimal Value'])
-        # print(round(infeas))
         if (round(result['Optimal Value']) != round(infeas)):
             print("No Feasible Solution")
-            result, table, X, Y, F, ite = None, None, None, None, None, None
-        # return result, table, X, Y, F, ite
+            if (obj == 'Min'):
+                result, table, X, Y, F, ite = float('inf'), None, None, None, [float('inf')], None
+            else:
+                result, table, X, Y, F, ite = -float('inf'), None, None, None, [-float('inf')], None
     else:
         x = np.zeros(lc)
-        table, x_new, C, basic_phs, I, Entering, EI, LI, Xs = phase1(c, table, x, obj, lengths, eps)
+        table, x_new, basic_phs, I, Entering, EI, LI, Xs = phase1(c, table, x, obj, lengths, eps)
         if (table[1][-1] > eps):
             print("No Feasible Solution")
-            result, table, X, Y, F, ite = None, None, None, None, None, None
-            # return result, table, X, Y, F, ite
+            if (obj == 'Min'):
+                result, table, X, Y, F, ite = float('inf'), None, None, None, [float('inf')], None
+            else:
+                result, table, X, Y, F, ite = -float('inf'), None, None, None, [-float('inf')], None
         else:
-            result, table, X, Y, F, ite = phase2(c, table, x_new, obj, C, basic_phs, I, lengths, eps, Entering, EI, LI, Xs)
-            # return result, table, X, Y, F, ite
+            result, table, X, Y, F, ite = phase2(c, table, x_new, obj, basic_phs, I, lengths, eps, Entering, EI, LI, Xs)
     if Show:
         print("The Optimal Tableau: ")
         print(tabulate(table))
     
-        
     return result, table, X, Y, F, ite
