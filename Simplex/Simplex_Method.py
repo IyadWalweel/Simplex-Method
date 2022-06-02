@@ -216,16 +216,16 @@ def simplex_Method(c, table, x, obj, lengths, eps, phase1 = False, phase2 = Fals
     # print("iterations = ", ite)
     
     if phase1:
-        print(basic_phs2)
-        print('c = ', c)
-        print('O = ', O)
-        print(len(C))
-        print('C = ', C)
-        print(len(I))
-        print("I = ", I)
-        print("Entering = ", Entering)
-        print('Xs = ', Xs)
-        print("EI = ", EI)
+        # print(basic_phs2)
+        # print('c = ', c)
+        # print('O = ', O)
+        # print(len(C))
+        # print('C = ', C)
+        # print(len(I))
+        # print("I = ", I)
+        # print("Entering = ", Entering)
+        # print('Xs = ', Xs)
+        # print("EI = ", EI)
         return table, X[-1], C, basic_phs2, I, Entering, EI, LI, Xs
     else:
         # print(len(EI))

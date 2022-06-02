@@ -23,9 +23,9 @@ def simplex(c, Al = None, bl = None, Ag = None, bg = None, Ae = None, be = None,
         result, table, X, Y, F, ite = Big_M_Method(c, table, M, x, obj, lengths, eps)
         infeas = c@X[-1]
         # print(X[-1])
-        print(round(result['Optimal Value']))
+        # print(round(result['Optimal Value']))
         # # print(result[0]['Optimal Value'])
-        print(round(infeas))
+        # print(round(infeas))
         if (round(result['Optimal Value']) != round(infeas)):
             print("No Feasible Solution")
             result, table, X, Y, F, ite = None, None, None, None, None, None

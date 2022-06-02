@@ -29,8 +29,8 @@ def phase2(c, table, x, obj, C, basic_phs, I, lengths, eps, Entering, EI, LI, Xs
     for i in range(len(basic_phs)):
         table[1][1:] -= basic_phs[i]*table[i+2][1:]
         # table[1][1:] += C[i]*table[I[i]][1:]
-    print(tabulate(table[0:, [0]]))
-    print(tabulate(table[0:2]))
+    # print(tabulate(table[0:, [0]]))
+    # print(tabulate(table[0:2]))
     result, table, X, Y, F, ite = simplex_Method(c, table, x, obj, lengths, eps, phase2 = True, basic_phs=basic_phs, 
                                                         Lev_I = I, Ent = Entering, Ent_I = EI, Levx_I= LI, XEnt= Xs)
 #     print(tabulate(table))
