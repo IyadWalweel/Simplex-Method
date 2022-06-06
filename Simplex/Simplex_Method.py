@@ -104,6 +104,8 @@ def simplex_Method(c, table, x, obj, lengths, eps, phase1 = False, phase2 = Fals
     if phase1:
         return table, X[-1], basic_phs2, I, Entering, EI, LI, Xs
     else:
+        X.append(X[-1])
+        Y.append(Y[-1])
         X = np.array(X)
         Y = np.array(Y)
         res = {
